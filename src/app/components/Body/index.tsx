@@ -8,7 +8,6 @@ const Body = () => {
 			const response = await fetch('api/sheets');
 			const data = await response.json();
 			setGlData(data);
-			console.log(data);
 		})();
 	}, []);
 
