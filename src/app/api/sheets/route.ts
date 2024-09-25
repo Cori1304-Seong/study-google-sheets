@@ -1,3 +1,4 @@
+import { enhanceData } from '@/app/utils/enhanceData';
 import { google } from 'googleapis';
 
 type TCredential = {
@@ -30,10 +31,10 @@ export async function GET() {
 	});
 	const glSheets = google.sheets({ version: 'v4', auth: glAuth });
 
-	const data = await glSheets.spreadsheets.values.get({
+	const data: any = await glSheets.spreadsheets.values.get({
 		spreadsheetId: process.env.SHEET_ID,
 		range: 'A1:J',
 	});
 
-	return Response.json({ data: data.data.values });
+	return Response.json(enhanceData(data?.data?.values));
 }
