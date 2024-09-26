@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react';
+import EmployeesTable from '../EmployeesTable';
 
 const Body = () => {
-	const [glData, setGlData] = useState();
+	const [glData, setGlData] = useState<{
+		fields: string[];
+		data: string[][];
+	}>();
 
 	useEffect(() => {
 		(async () => {
@@ -13,7 +17,7 @@ const Body = () => {
 
 	if (!glData) return <p>Loading...</p>;
 
-	return <div>Hello!!</div>;
+	return <EmployeesTable fields={glData.fields} data={glData.data} />;
 };
 
 export default Body;

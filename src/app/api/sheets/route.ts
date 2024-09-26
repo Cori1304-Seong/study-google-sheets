@@ -1,4 +1,3 @@
-import { enhanceData } from '@/app/utils/enhanceData';
 import { google } from 'googleapis';
 
 type TCredential = {
@@ -36,5 +35,8 @@ export async function GET() {
 		range: 'A1:J',
 	});
 
-	return Response.json(enhanceData(data?.data?.values));
+	return Response.json({
+		fields: data.data.values[0],
+		data: data.data.values.slice(1),
+	});
 }
