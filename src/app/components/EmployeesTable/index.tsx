@@ -10,7 +10,7 @@ const EmployeesTable = ({
 	data,
 }: TEmployeesTableProps): ReactElement => {
 	return (
-		<table className='w-full table-auto border-2 text-left text-sm text-gray-500 rtl:text-right'>
+		<table className='w-full table-auto border-2 text-left text-sm text-gray-500 shadow-md rtl:text-right'>
 			<thead className='border-b-4 bg-blue-50 text-xs uppercase text-gray-700'>
 				<tr>
 					{fields.map((field, index) => (
