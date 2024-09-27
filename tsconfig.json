@@ -28,7 +28,8 @@
 		"**/*.tsx",
 		".next/types/**/*.ts",
 		"jest.config.ts",
-		"jest.setup.ts"
+		"jest.setup.ts",
+		"src/app/constants"
 	],
 	"exclude": ["node_modules"]
 }
