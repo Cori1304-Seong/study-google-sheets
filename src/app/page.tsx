@@ -1,11 +1,14 @@
 'use client';
 import Body from './components/Body';
+import { SheetContextProvider } from './context/SheetContext';
 
 const Home = () => {
 	return (
 		<section className='py-24'>
 			<div className='container'>
-				<Body />
+				<SheetContextProvider>
+					<Body />
+				</SheetContextProvider>
 			</div>
 		</section>
 	);

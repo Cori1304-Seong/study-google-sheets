@@ -1,8 +1,8 @@
-import SheetContext from '@/app/context/SheetContext';
-import { ReactElement, useContext } from 'react';
+import { useSheetContext } from '@/app/context/SheetContext';
+import { ReactElement } from 'react';
 
 const EmployeesTable = (): ReactElement => {
-	const { fields, data } = useContext(SheetContext);
+	const { fields, filteredData: data } = useSheetContext();
 
 	return (
 		<table className='w-full table-auto border-2 text-left text-sm text-gray-500 shadow-md rtl:text-right'>
