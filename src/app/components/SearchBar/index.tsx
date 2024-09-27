@@ -1,16 +1,14 @@
+import { useSearchDataContext } from '@/app/context/SearchDataContext';
 import { ReactElement, useState } from 'react';
 
-type TSearchBarProps = {
-	onSearch: Function;
-};
-
-const SearchBar = ({ onSearch }: TSearchBarProps): ReactElement => {
+const SearchBar = (): ReactElement => {
+	const { handleSearch } = useSearchDataContext();
 	const [searchText, setSearchText] = useState('');
 
 	const handleKeyDown = (e: any) => {
 		if (e.key === 'Enter') {
 			e.preventDefault();
-			onSearch(searchText);
+			handleSearch(searchText);
 		}
 	};
 
@@ -23,7 +21,7 @@ const SearchBar = ({ onSearch }: TSearchBarProps): ReactElement => {
 			/>
 			<button
 				className='text-ellipsis rounded-md border-2 bg-purple-200 px-3 py-1 text-sm hover:bg-purple-900 hover:text-white'
-				onClick={() => onSearch(searchText)}
+				onClick={() => handleSearch(searchText)}
 			>
 				Search
 			</button>

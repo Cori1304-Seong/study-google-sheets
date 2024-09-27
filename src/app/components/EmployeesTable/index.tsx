@@ -1,8 +1,10 @@
+import { useSearchDataContext } from '@/app/context/SearchDataContext';
 import { useSheetContext } from '@/app/context/SheetContext';
 import { ReactElement } from 'react';
 
 const EmployeesTable = (): ReactElement => {
-	const { fields, filteredData: data } = useSheetContext();
+	const { fields } = useSheetContext();
+	const { filteredData: data } = useSearchDataContext();
 
 	return (
 		<table className='w-full table-auto border-2 text-left text-sm text-gray-500 shadow-md rtl:text-right'>
