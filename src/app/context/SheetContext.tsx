@@ -24,7 +24,9 @@ const SheetContextProvider = ({ children }: any): ReactElement => {
 
 	useEffect(() => {
 		(async () => {
-			const response = await fetch('api/sheets');
+			const response = await fetch(
+				process.env.NEXT_PUBLIC_BASE_URL + 'api/sheets'
+			);
 			const result = await response.json();
 			setGlData(result);
 		})();

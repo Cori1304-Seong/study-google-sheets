@@ -1,10 +1,17 @@
+import { keysIndex } from '@/app/constants/searchKeys';
 import { useSearchDataContext } from '@/app/context/SearchDataContext';
 import { useSheetContext } from '@/app/context/SheetContext';
+import { useRouter } from 'next/navigation';
 import { ReactElement } from 'react';
 
 const EmployeesTable = (): ReactElement => {
+	const router = useRouter();
 	const { fields } = useSheetContext();
 	const { filteredData: data } = useSearchDataContext();
+
+	const onRowClick = (id: string) => {
+		router.push(`/people/${id}`);
+	};
 
 	return (
 		<table className='w-full table-auto border-2 text-left text-sm text-gray-500 shadow-md rtl:text-right'>
@@ -21,7 +28,8 @@ const EmployeesTable = (): ReactElement => {
 				{data.map((empDetails: string[]) => (
 					<tr
 						className='cursor-pointer border-b-[1px] hover:bg-pink-50'
-						key={empDetails[1]}
+						key={empDetails[keysIndex.id]}
+						onClick={() => onRowClick(empDetails[keysIndex.id])}
 					>
 						<>
 							{empDetails.map((value: string, index: number) => (

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import ParentProvider from './ParentWrapper';
 
 export const metadata: Metadata = {
 	title: 'GS App',
@@ -14,7 +15,7 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body className={'antialiased'}>
-				<div className='container'>{children}</div>
+				<ParentProvider>{children}</ParentProvider>
 			</body>
 		</html>
 	);

@@ -1,4 +1,4 @@
-import { searchKeys } from '../constants/searchKeys';
+import { keysIndex, searchKeys } from '../constants/searchKeys';
 
 type TSearchDataParams = {
 	searchTerm: string;
@@ -23,6 +23,16 @@ const searchData = ({ searchTerm, glData }: TSearchDataParams): string[][] => {
 				emp[searchIndex].toLowerCase().includes(searchTerm.toLowerCase())
 			)
 		: data;
+};
+
+export const filterEmpById = ({
+	id,
+	data,
+}: {
+	id: string;
+	data: string[][];
+}) => {
+	return data.filter((emp) => emp[keysIndex.id] === id)[0];
 };
 
 export default searchData;
