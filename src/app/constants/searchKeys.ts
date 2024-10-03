@@ -17,4 +17,16 @@ export const keysIndex = {
 	uan: 7,
 	aadhar: 8,
 	pan: 9,
-} as { [key: string]: number };
+};
+
+export const empKeyToFields = {
+	[keysIndex.name]: 'Name',
+	[keysIndex.fatherName]: 'Father Name',
+	[keysIndex.phoneNo]: 'Phone Number',
+	[keysIndex.dob]: 'Date of Birth',
+	[keysIndex.doj]: 'Date of Joining',
+	[keysIndex.dor]: 'Date of Retirement',
+	[keysIndex.uan]: 'UAN',
+	[keysIndex.aadhar]: 'Aadhar Number',
+	[keysIndex.pan]: 'PAN',
+};
