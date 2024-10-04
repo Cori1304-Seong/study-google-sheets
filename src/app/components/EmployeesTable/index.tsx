@@ -1,4 +1,4 @@
-import { keysIndex } from '@/app/constants/searchKeys';
+import { keysIndex } from '@/app/constants';
 import { useSearchDataContext } from '@/app/context/SearchDataContext';
 import { useSheetContext } from '@/app/context/SheetContext';
 import { useRouter } from 'next/navigation';

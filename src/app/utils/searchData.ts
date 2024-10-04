@@ -1,4 +1,4 @@
-import { keysIndex, searchKeys } from '../constants/searchKeys';
+import { keysIndex, searchKeys } from '../constants';
 
 type TSearchDataParams = {
 	searchTerm: string;

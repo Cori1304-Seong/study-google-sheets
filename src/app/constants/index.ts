@@ -21,6 +21,7 @@ export const keysIndex = {
 
 export const empKeyToFields = {
 	[keysIndex.name]: 'Name',
+	[keysIndex.id]: 'Emp id',
 	[keysIndex.fatherName]: 'Father Name',
 	[keysIndex.phoneNo]: 'Phone Number',
 	[keysIndex.dob]: 'Date of Birth',
