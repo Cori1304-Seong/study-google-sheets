@@ -13,7 +13,6 @@ type ModalProps = {
 };
 
 const Modal = ({ values, handleClose, handleSave }: ModalProps) => {
-	console.log(values);
 	return (
 		<div className='relative z-10'>
 			<div

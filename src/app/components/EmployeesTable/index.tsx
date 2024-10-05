@@ -9,8 +9,8 @@ const EmployeesTable = (): ReactElement => {
 	const { fields } = useSheetContext();
 	const { filteredData: data } = useSearchDataContext();
 
-	const onRowClick = (id: string) => {
-		router.push(`/people/${id}`);
+	const onRowClick = (id: string, rowIndex: number) => {
+		router.push(`/people/${rowIndex + 2}-${id}`);
 	};
 
 	return (
@@ -25,11 +25,11 @@ const EmployeesTable = (): ReactElement => {
 				</tr>
 			</thead>
 			<tbody>
-				{data.map((empDetails: string[]) => (
+				{data.map((empDetails: string[], rowIndex) => (
 					<tr
 						className='cursor-pointer border-b-[1px] hover:bg-pink-50'
 						key={empDetails[keysIndex.id]}
-						onClick={() => onRowClick(empDetails[keysIndex.id])}
+						onClick={() => onRowClick(empDetails[keysIndex.id], rowIndex)}
 					>
 						<>
 							{empDetails.map((value: string, index: number) => (

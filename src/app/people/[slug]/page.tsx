@@ -2,7 +2,9 @@
 import Employee from '@/app/components/Employee';
 
 const PeoplePage = ({ params }: { params: { slug: string } }) => {
-	return <Employee id={params.slug} />;
+	const [row, id] = params.slug.split('-');
+
+	return <Employee id={id} row={Number(row)} />;
 };
 
 export default PeoplePage;

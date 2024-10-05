@@ -11,7 +11,7 @@ type TCredential = {
 	universe_domain: string;
 };
 
-export async function getSheetData() {
+export async function getGoogleSheets() {
 	const credential: TCredential = JSON.parse(
 		atob(process.env.GOOGLE_SERVICE_KEY ?? '')
 	);
@@ -30,12 +30,5 @@ export async function getSheetData() {
 		scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 	});
 
-	const glSheets = google.sheets({ version: 'v4', auth: glAuth });
-
-	const data = await glSheets.spreadsheets.values.get({
-		spreadsheetId: process.env.SHEET_ID,
-		range: 'A1:J',
-	});
-
-	return { data: data?.data?.values };
+	return google.sheets({ version: 'v4', auth: glAuth });
 }

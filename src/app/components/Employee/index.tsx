@@ -6,8 +6,9 @@ import EmpColByFields from './EmpColByFields';
 import Avatar from '@/app/icons/Avatar';
 import Modal from '../Modal';
 import { getDiffValues } from '@/app/utils/getDiffValues';
+import { updateData } from '@/app/actions/updateData';
 
-const Employee = ({ id }: { id: string }) => {
+const Employee = ({ id, row }: { id: string; row: number }) => {
 	const [empData, setEmpData] = useState<string[]>();
 	const [formValues, setFormValues] = useState<string[]>();
 	const [editMode, setEditMode] = useState<boolean>(false);
@@ -21,14 +22,19 @@ const Employee = ({ id }: { id: string }) => {
 		setFormValues(filteredEmpData);
 	}, [sheetData]);
 
-	const handleUpdate = () => {
+	const handleUpdate = async () => {
 		setShowModal(false);
+		setEditMode(false);
+		const updatedValues = await updateData({
+			range: `A${row}`,
+			values: [formValues ?? []],
+		});
+		setEmpData(updatedValues);
+		setFormValues(updatedValues);
 		/**
-		 * TODO: make api call to update google sheet
 		 * TODO: show loader
 		 * TODO: show snack bar - updated successfully
 		 */
-		setEditMode(false);
 	};
 
 	const handleInputChange = (value: string, keyIndex: number) => {

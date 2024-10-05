@@ -20,7 +20,10 @@ const UpdateDiffTable = ({ values }: UpdateDiffTableProps) => {
 			</thead>
 			<tbody>
 				{values.map((value, index) => (
-					<tr className='cursor-pointer divide-x-2 border-b-[1px] hover:bg-gray-50'>
+					<tr
+						className='cursor-pointer divide-x-2 border-b-[1px] hover:bg-gray-50'
+						key={index}
+					>
 						<th className='px-2 py-1'>{empKeyToFields[index]}</th>
 						<td className={`px-2 py-1 ${value.isChanged && 'bg-red-50'}`}>
 							{value.old}
