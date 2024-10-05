@@ -1,4 +1,4 @@
-import Upload from '@/app/icons/Upload';
+import UploadIcon from '@/app/icons/UploadIcon';
 import UpdateDiffTable from '../UpdateDiffTable';
 import { MouseEventHandler } from 'react';
 
@@ -25,7 +25,7 @@ const Modal = ({ values, handleClose, handleSave }: ModalProps) => {
 						<div className='px-4 pb-4 pt-5 sm:p-6 sm:pb-4'>
 							<div className='sm:flex sm:items-start'>
 								<div className='mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center sm:mx-0 sm:h-10 sm:w-10'>
-									<Upload />
+									<UploadIcon />
 								</div>
 								<div className='mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left'>
 									<h3
