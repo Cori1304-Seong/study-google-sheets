@@ -1,4 +1,4 @@
-import { getDiffValues } from './getDiffValues';
+import { getDiffValues, hasDiffValues } from './getDiffValues';
 
 describe('getDiffValues', () => {
 	it('should return array with old, new values and isChanged attribute', () => {
@@ -16,5 +16,25 @@ describe('getDiffValues', () => {
 		];
 
 		expect(getDiffValues(data.oldValues, data.newValues)).toEqual(expectedData);
+	});
+});
+
+describe('hasDiffValues', () => {
+	it('should return true if any of the values is changed', () => {
+		const data = {
+			oldValues: ['hey', 'there', 'this', 'is', 'just', 'test'],
+			newValues: ['hello', 'there', 'this', 'is', 'test', 'file'],
+		};
+
+		expect(hasDiffValues(data.oldValues, data.newValues)).toEqual(true);
+	});
+
+	it('should return false if no value is changed', () => {
+		const data = {
+			oldValues: ['hey', 'there', 'this', 'is', 'just', 'test'],
+			newValues: ['hey', 'there', 'this', 'is', 'just', 'test'],
+		};
+
+		expect(hasDiffValues(data.oldValues, data.newValues)).toEqual(false);
 	});
 });

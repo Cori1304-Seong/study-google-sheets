@@ -4,7 +4,7 @@ import { filterEmpById } from '@/app/utils/searchData';
 import { useEffect, useState } from 'react';
 import EmpColByFields from './EmpColByFields';
 import Modal from '../Modal';
-import { getDiffValues } from '@/app/utils/getDiffValues';
+import { getDiffValues, hasDiffValues } from '@/app/utils/getDiffValues';
 import { updateData } from '@/app/actions/updateData';
 import EmployeeDataSkeleton from './EmployeeDataSkeleton';
 import EmployeeHeader from './EmployeeHeader';
@@ -30,7 +30,24 @@ const Employee = ({ id, row }: { id: string; row: number }) => {
 		setFormValues(undefined);
 	};
 
+	if (!empData || !formValues) {
+		return (
+			<div>
+				<EmployeeHeader id={id} />
+				<EmployeeDataSkeleton />
+			</div>
+		);
+	}
+
 	const handleUpdate = async () => {
+		if (!hasDiffValues(empData, formValues)) {
+			/**
+			 * TODO: show snack bar - no changes detected
+			 */
+			setShowModal(false);
+			return;
+		}
+
 		resetState();
 
 		const updatedValues = await updateData({
@@ -50,15 +67,6 @@ const Employee = ({ id, row }: { id: string; row: number }) => {
 		setFormValues(newValues);
 	};
 
-	if (!empData || !formValues) {
-		return (
-			<div>
-				<EmployeeHeader id={id} />
-				<EmployeeDataSkeleton />
-			</div>
-		);
-	}
-
 	return (
 		<div>
 			<EmployeeHeader id={id} />
@@ -75,22 +83,12 @@ const Employee = ({ id, row }: { id: string; row: number }) => {
 						handleChange={handleInputChange}
 					/>
 				</div>
-				{!editMode && (
-					<button
-						onClick={() => setEditMode(true)}
-						className='mr-20 cursor-pointer self-end rounded-md border-2 bg-gray-500 px-8 py-1 font-mono font-semibold text-white transition duration-150 ease-in-out hover:border-gray-800 hover:bg-gray-200 hover:text-gray-800'
-					>
-						Edit
-					</button>
-				)}
-				{editMode && (
-					<button
-						onClick={() => setShowModal(true)}
-						className='mr-20 cursor-pointer self-end rounded-md border-2 bg-gray-500 px-8 py-1 font-mono font-semibold text-white transition duration-150 ease-in-out hover:border-gray-800 hover:bg-gray-200 hover:text-gray-800'
-					>
-						Update
-					</button>
-				)}
+				<button
+					onClick={() => (editMode ? setShowModal(true) : setEditMode(true))}
+					className='mr-20 cursor-pointer self-end rounded-md border-2 bg-gray-500 px-8 py-1 font-mono font-semibold text-white transition duration-150 ease-in-out hover:border-gray-800 hover:bg-gray-200 hover:text-gray-800'
+				>
+					{editMode ? 'Update' : 'Edit'}
+				</button>
 				{showModal && (
 					<Modal
 						values={getDiffValues(empData, formValues)}

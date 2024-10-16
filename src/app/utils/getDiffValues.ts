@@ -8,3 +8,10 @@ export const getDiffValues = (
 		isChanged: oldValue !== newValues[index],
 	}));
 };
+
+export const hasDiffValues = (
+	oldValues: string[],
+	newValues: string[]
+): boolean => {
+	return oldValues.some((oldValue, index) => oldValue !== newValues[index]);
+};
