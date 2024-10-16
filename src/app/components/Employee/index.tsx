@@ -1,4 +1,4 @@
-import { keysIndex } from '@/app/constants';
+import { AlertMessage, AlertType, keysIndex } from '@/app/constants';
 import { useSheetContext } from '@/app/context/SheetContext';
 import { filterEmpById } from '@/app/utils/searchData';
 import { useEffect, useState } from 'react';
@@ -8,12 +8,24 @@ import { getDiffValues, hasDiffValues } from '@/app/utils/getDiffValues';
 import { updateData } from '@/app/actions/updateData';
 import EmployeeDataSkeleton from './EmployeeDataSkeleton';
 import EmployeeHeader from './EmployeeHeader';
+import Alert from '../Alert';
+
+type TAlertProps = {
+	show: boolean;
+	message: string;
+	type: keyof typeof AlertType;
+};
 
 const Employee = ({ id, row }: { id: string; row: number }) => {
 	const [empData, setEmpData] = useState<string[]>();
 	const [formValues, setFormValues] = useState<string[]>();
 	const [editMode, setEditMode] = useState<boolean>(false);
 	const [showModal, setShowModal] = useState<boolean>(false);
+	const [alert, setAlert] = useState<TAlertProps>({
+		show: false,
+		message: '',
+		type: 'INFO',
+	});
 
 	const { data: sheetData } = useSheetContext();
 
@@ -22,13 +34,6 @@ const Employee = ({ id, row }: { id: string; row: number }) => {
 		setEmpData(filteredEmpData);
 		setFormValues(filteredEmpData);
 	}, [sheetData]);
-
-	const resetState = () => {
-		setShowModal(false);
-		setEditMode(false);
-		setEmpData(undefined);
-		setFormValues(undefined);
-	};
 
 	if (!empData || !formValues) {
 		return (
@@ -39,26 +44,48 @@ const Employee = ({ id, row }: { id: string; row: number }) => {
 		);
 	}
 
-	const handleUpdate = async () => {
+	const validateFormValues = (): boolean => {
+		setShowModal(false);
 		if (!hasDiffValues(empData, formValues)) {
-			/**
-			 * TODO: show snack bar - no changes detected
-			 */
-			setShowModal(false);
-			return;
+			showAlert('WARNING');
+			return false;
 		}
 
-		resetState();
+		return true;
+	};
 
+	const showAlert = (type: keyof typeof AlertType) => {
+		setAlert({
+			show: true,
+			message: AlertMessage[type],
+			type,
+		});
+		setTimeout(() => clearAlert(), 8000);
+	};
+
+	const clearAlert = () => {
+		setAlert({ show: false, message: '', type: 'INFO' });
+	};
+
+	const handleUpdate = async () => {
+		if (!validateFormValues()) return;
+
+		setEditMode(false);
+		setFormValues(undefined);
 		const updatedValues = await updateData({
 			range: `A${row}`,
 			values: [formValues ?? []],
 		});
+
+		if (!updatedValues) {
+			showAlert('ERROR');
+			setFormValues(empData);
+			return;
+		}
+
 		setEmpData(updatedValues);
 		setFormValues(updatedValues);
-		/**
-		 * TODO: show snack bar - updated successfully
-		 */
+		showAlert('SUCCESS');
 	};
 
 	const handleInputChange = (value: string, keyIndex: number) => {
@@ -71,7 +98,18 @@ const Employee = ({ id, row }: { id: string; row: number }) => {
 		<div>
 			<EmployeeHeader id={id} />
 			<div className='flex flex-col flex-wrap gap-4 p-10 py-5'>
-				<div className='mt-10 flex w-full flex-col flex-wrap justify-start overflow-auto rounded-md border-2 p-8 text-xs shadow-sm md:flex-row md:justify-evenly md:text-sm'>
+				{alert.show && (
+					<div className='m-2 w-2/3 self-center overflow-auto'>
+						<Alert
+							severity={alert.type}
+							message={alert.message}
+							onClose={clearAlert}
+						/>
+					</div>
+				)}
+				<div
+					className={`flex w-full flex-col flex-wrap justify-start overflow-auto rounded-md border-2 p-8 text-xs shadow-sm md:flex-row md:justify-evenly md:text-sm ${!alert.show && 'mt-10'}`}
+				>
 					<EmpColByFields
 						data={empData}
 						editMode={editMode}

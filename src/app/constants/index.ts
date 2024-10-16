@@ -31,3 +31,17 @@ export const empKeyToFields = {
 	[keysIndex.aadhar]: 'Aadhar Number',
 	[keysIndex.pan]: 'PAN',
 };
+
+export const AlertType = {
+	ERROR: 'ERROR',
+	SUCCESS: 'SUCCESS',
+	INFO: 'INFO',
+	WARNING: 'WARNING',
+};
+
+export const AlertMessage = {
+	[AlertType.ERROR]: 'There was an error updating the fields!',
+	[AlertType.SUCCESS]: 'Fields updated successfully!',
+	[AlertType.WARNING]: 'No changes were detected.',
+	[AlertType.INFO]: 'Please wait while the fields are being updated.',
+};
