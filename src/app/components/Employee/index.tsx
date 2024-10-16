@@ -3,12 +3,11 @@ import { useSheetContext } from '@/app/context/SheetContext';
 import { filterEmpById } from '@/app/utils/searchData';
 import { useEffect, useState } from 'react';
 import EmpColByFields from './EmpColByFields';
-import Avatar from '@/app/icons/Avatar';
 import Modal from '../Modal';
 import { getDiffValues } from '@/app/utils/getDiffValues';
 import { updateData } from '@/app/actions/updateData';
-import HomeIcon from '@/app/icons/HomeIcon';
-import Link from 'next/link';
+import EmployeeDataSkeleton from './EmployeeDataSkeleton';
+import EmployeeHeader from './EmployeeHeader';
 
 const Employee = ({ id, row }: { id: string; row: number }) => {
 	const [empData, setEmpData] = useState<string[]>();
@@ -24,9 +23,16 @@ const Employee = ({ id, row }: { id: string; row: number }) => {
 		setFormValues(filteredEmpData);
 	}, [sheetData]);
 
-	const handleUpdate = async () => {
+	const resetState = () => {
 		setShowModal(false);
 		setEditMode(false);
+		setEmpData(undefined);
+		setFormValues(undefined);
+	};
+
+	const handleUpdate = async () => {
+		resetState();
+
 		const updatedValues = await updateData({
 			range: `A${row}`,
 			values: [formValues ?? []],
@@ -34,7 +40,6 @@ const Employee = ({ id, row }: { id: string; row: number }) => {
 		setEmpData(updatedValues);
 		setFormValues(updatedValues);
 		/**
-		 * TODO: show loader
 		 * TODO: show snack bar - updated successfully
 		 */
 	};
@@ -46,21 +51,17 @@ const Employee = ({ id, row }: { id: string; row: number }) => {
 	};
 
 	if (!empData || !formValues) {
-		return <div>Loading!</div>;
+		return (
+			<div>
+				<EmployeeHeader id={id} />
+				<EmployeeDataSkeleton />
+			</div>
+		);
 	}
 
 	return (
 		<div>
-			<div className='flex h-40 w-full flex-row items-center justify-between bg-gradient-to-r from-indigo-500 to-pink-300 font-serif text-white drop-shadow-lg'>
-				<Link href={'/'} className='ml-10'>
-					<HomeIcon />
-				</Link>
-				<div className='flex flex-wrap items-center justify-center gap-3 text-3xl font-extrabold'>
-					<Avatar />
-					<div>#{id}</div>
-				</div>
-				<div></div>
-			</div>
+			<EmployeeHeader id={id} />
 			<div className='flex flex-col flex-wrap gap-4 p-10 py-5'>
 				<div className='mt-10 flex w-full flex-col flex-wrap justify-start overflow-auto rounded-md border-2 p-8 text-xs shadow-sm md:flex-row md:justify-evenly md:text-sm'>
 					<EmpColByFields
