@@ -99,7 +99,7 @@ const Employee = ({ id, row }: { id: string; row: number }) => {
 			<EmployeeHeader id={id} />
 			<div className='flex flex-col flex-wrap gap-4 p-10 py-5'>
 				{alert.show && (
-					<div className='m-2 w-2/3 self-center overflow-auto'>
+					<div className='animate-appear m-2 w-2/3 self-center overflow-auto'>
 						<Alert
 							severity={alert.type}
 							message={alert.message}
