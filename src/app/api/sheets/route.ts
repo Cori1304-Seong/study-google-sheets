@@ -6,5 +6,6 @@ export async function GET() {
 	return Response.json({
 		fields: data ? data[0] : [],
 		data: data?.slice(1),
+		totalRows: data ? data.length - 1 : 0,
 	});
 }

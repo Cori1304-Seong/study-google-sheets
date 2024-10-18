@@ -2,6 +2,7 @@ import EmployeesTable from '../EmployeesTable';
 import SearchBar from '../SearchBar';
 import { SearchDataContextProvider } from '@/app/context/SearchDataContext';
 import CreateButton from './CreateButton';
+import { PaginationContextProvider } from '@/app/context/PaginationContext';
 
 const Body = () => {
 	return (
@@ -11,7 +12,9 @@ const Body = () => {
 					<SearchBar />
 					<CreateButton />
 				</div>
-				<EmployeesTable />
+				<PaginationContextProvider>
+					<EmployeesTable />
+				</PaginationContextProvider>
 			</SearchDataContextProvider>
 		</div>
 	);

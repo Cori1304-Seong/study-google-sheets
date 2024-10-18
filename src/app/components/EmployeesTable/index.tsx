@@ -1,16 +1,19 @@
 import { keysIndex } from '@/app/constants';
-import { useSearchDataContext } from '@/app/context/SearchDataContext';
 import { useSheetContext } from '@/app/context/SheetContext';
 import { useRouter } from 'next/navigation';
 import { ReactElement } from 'react';
+import PaginationFooter from './PaginationFooter';
+import { usePaginationContext } from '@/app/context/PaginationContext';
 
 const EmployeesTable = (): ReactElement => {
 	const router = useRouter();
 	const { fields } = useSheetContext();
-	const { filteredData: data } = useSearchDataContext();
+	const { pageContext } = usePaginationContext();
+	const { pageData, totalItems, from: currFrom } = pageContext;
 
 	const onRowClick = (id: string, rowIndex: number) => {
-		router.push(`/people/${rowIndex + 2}-${id}`);
+		const row = currFrom + rowIndex + 1;
+		router.push(`/people/${row}-${id}`);
 	};
 
 	return (
@@ -25,10 +28,10 @@ const EmployeesTable = (): ReactElement => {
 				</tr>
 			</thead>
 			<tbody>
-				{data.map((empDetails: string[], rowIndex) => (
+				{pageData.map((empDetails: string[], rowIndex) => (
 					<tr
-						className='cursor-pointer border-b-[1px] hover:bg-pink-50'
-						key={empDetails[keysIndex.id]}
+						className='cursor-pointer whitespace-nowrap border-b-[1px] hover:bg-pink-50'
+						key={`${empDetails[keysIndex.id]}-${rowIndex}`}
 						onClick={() => onRowClick(empDetails[keysIndex.id], rowIndex)}
 					>
 						<>
@@ -41,6 +44,7 @@ const EmployeesTable = (): ReactElement => {
 					</tr>
 				))}
 			</tbody>
+			{!!totalItems && <PaginationFooter colSpan={fields.length} />}
 		</table>
 	);
 };
