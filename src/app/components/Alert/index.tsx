@@ -31,16 +31,16 @@ type AlertProps = {
 };
 
 const Alert = ({ severity = 'INFO', message, onClose }: AlertProps) => {
-	const { colorClasses, icon } = alert[severity];
+	const { colorClasses, icon } = alert[AlertType[severity]];
 
 	return (
 		<div
-			className={`flex flex-row items-center justify-between rounded border px-4 py-3 ${colorClasses}`}
+			className={`flex flex-row items-center justify-between gap-8 rounded border px-4 py-3 ${colorClasses}`}
 			role='alert'
 		>
-			<div className='flex flex-row gap-2'>
+			<div className='flex flex-row items-center gap-2'>
 				<div>{icon}</div>
-				<div>{message}</div>
+				<div className='text-xs md:text-sm'>{message}</div>
 			</div>
 
 			<div className='cursor-pointer' onClick={onClose}>

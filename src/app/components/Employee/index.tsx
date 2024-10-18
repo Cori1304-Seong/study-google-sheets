@@ -11,6 +11,7 @@ import EmployeeHeader from './EmployeeHeader';
 import Alert from '../Alert';
 import { useRouter } from 'next/navigation';
 import { createQueryString } from '@/app/utils/createQueryString';
+import { hasDuplicates } from '@/app/utils/hasDuplicates';
 
 type TAlertProps = {
 	show: boolean;
@@ -63,11 +64,17 @@ const Employee = ({
 
 	const validateFormValues = (): boolean => {
 		setShowModal(false);
-		if (!hasDiffValues(empData, formValues)) {
-			showAlert('WARNING');
+
+		let alertType: keyof typeof AlertType | undefined;
+		if (!hasDiffValues(empData, formValues)) alertType = 'WARNING';
+		if (formValues.some((value) => !value)) alertType = 'EMPTY';
+		if (isCreate && hasDuplicates(sheetData, formValues))
+			alertType = 'DUPLICATE';
+
+		if (alertType) {
+			showAlert(alertType);
 			return false;
 		}
-
 		return true;
 	};
 
@@ -122,7 +129,7 @@ const Employee = ({
 			<EmployeeHeader id={id} />
 			<div className='flex flex-col flex-wrap gap-4 p-10 py-5'>
 				{alert.show && (
-					<div className='animate-appear m-2 w-2/3 self-center overflow-auto'>
+					<div className='animate-appear m-2 self-center overflow-auto'>
 						<Alert
 							severity={alert.type}
 							message={alert.message}

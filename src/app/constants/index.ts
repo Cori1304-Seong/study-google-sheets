@@ -32,16 +32,33 @@ export const empKeyToFields = {
 	[keysIndex.pan]: 'PAN',
 };
 
+/**
+ * Fields that should be unique
+ */
+export const uniqIndices = [
+	keysIndex.id,
+	keysIndex.phoneNo,
+	keysIndex.aadhar,
+	keysIndex.pan,
+	keysIndex.uan,
+];
+
 export const AlertType = {
 	ERROR: 'ERROR',
 	SUCCESS: 'SUCCESS',
 	INFO: 'INFO',
 	WARNING: 'WARNING',
+
+	DUPLICATE: 'ERROR',
+	EMPTY: 'ERROR',
 };
 
 export const AlertMessage = {
-	[AlertType.ERROR]: 'There was an error updating the fields!',
-	[AlertType.SUCCESS]: 'Fields updated successfully!',
-	[AlertType.WARNING]: 'No changes were detected.',
-	[AlertType.INFO]: 'Please wait while the fields are being updated.',
+	ERROR: 'There was an error updating the fields!',
+	SUCCESS: 'Fields updated successfully!',
+	WARNING: 'No changes were detected.',
+	INFO: 'Please wait while the fields are being updated.',
+	DUPLICATE:
+		'Entered data duplicates with our data, please enter unique ID | Aadhar | PAN | UAN | Phone Number ',
+	EMPTY: 'Please fill all the fields',
 };
