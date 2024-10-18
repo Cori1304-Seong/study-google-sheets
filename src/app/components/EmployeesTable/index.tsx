@@ -7,13 +7,13 @@ import { usePaginationContext } from '@/app/context/PaginationContext';
 
 const EmployeesTable = (): ReactElement => {
 	const router = useRouter();
-	const { fields } = useSheetContext();
+	const { fields, idNameRowMap } = useSheetContext();
 	const { pageContext } = usePaginationContext();
-	const { pageData, totalItems, from: currFrom } = pageContext;
+	const { pageData, totalItems } = pageContext;
 
-	const onRowClick = (id: string, rowIndex: number) => {
-		const row = currFrom + rowIndex + 1;
-		router.push(`/people/${row}-${id}`);
+	const onRowClick = (id: string, name: string) => {
+		const key = `${id}-${name}`;
+		router.push(`/people/${idNameRowMap[key]}-${id}`);
 	};
 
 	return (
@@ -32,7 +32,9 @@ const EmployeesTable = (): ReactElement => {
 					<tr
 						className='cursor-pointer whitespace-nowrap border-b-[1px] hover:bg-pink-50'
 						key={`${empDetails[keysIndex.id]}-${rowIndex}`}
-						onClick={() => onRowClick(empDetails[keysIndex.id], rowIndex)}
+						onClick={() =>
+							onRowClick(empDetails[keysIndex.id], empDetails[keysIndex.name])
+						}
 					>
 						<>
 							{empDetails.map((value: string, index: number) => (

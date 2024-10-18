@@ -6,7 +6,9 @@ export const searchKeys = {
 };
 
 /**
- * * Indexes as per the order of fields in the spreadsheet.
+ * * Indexes as per the order of the fields in the spreadsheet.
+ * * NOTE: id and name are mandatory for the keys
+ * If changed, please change the functionality of idNameWithRowMap in sheet context
  */
 export const keysIndex = {
 	name: 0,
