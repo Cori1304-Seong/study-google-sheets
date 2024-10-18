@@ -10,7 +10,7 @@ const EmployeeHeader = ({ id }: { id: string }) => {
 			</Link>
 			<div className='flex flex-wrap items-center justify-center gap-3 text-3xl font-extrabold'>
 				<Avatar />
-				<div>#{id}</div>
+				<div>{id === '#' ? 'Create New' : id}</div>
 			</div>
 			<div></div>
 		</div>

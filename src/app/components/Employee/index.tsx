@@ -9,6 +9,8 @@ import { updateData } from '@/app/actions/updateData';
 import EmployeeDataSkeleton from './EmployeeDataSkeleton';
 import EmployeeHeader from './EmployeeHeader';
 import Alert from '../Alert';
+import { useRouter } from 'next/navigation';
+import { createQueryString } from '@/app/utils/createQueryString';
 
 type TAlertProps = {
 	show: boolean;
@@ -16,10 +18,19 @@ type TAlertProps = {
 	type: keyof typeof AlertType;
 };
 
-const Employee = ({ id, row }: { id: string; row: number }) => {
+const Employee = ({
+	id,
+	row,
+	isCreate,
+}: {
+	id: string;
+	row?: number;
+	isCreate?: boolean;
+}) => {
+	const router = useRouter();
 	const [empData, setEmpData] = useState<string[]>();
 	const [formValues, setFormValues] = useState<string[]>();
-	const [editMode, setEditMode] = useState<boolean>(false);
+	const [editMode, setEditMode] = useState<boolean>(!!isCreate);
 	const [showModal, setShowModal] = useState<boolean>(false);
 	const [alert, setAlert] = useState<TAlertProps>({
 		show: false,
@@ -30,12 +41,18 @@ const Employee = ({ id, row }: { id: string; row: number }) => {
 	const { data: sheetData } = useSheetContext();
 
 	useEffect(() => {
-		const filteredEmpData = filterEmpById({ id, data: sheetData });
+		const filteredEmpData =
+			filterEmpById({ id, data: sheetData }) ??
+			Array.from({ length: Object.keys(keysIndex).length });
 		setEmpData(filteredEmpData);
 		setFormValues(filteredEmpData);
 	}, [sheetData]);
 
-	if (!empData || !formValues) {
+	if (
+		!empData ||
+		!formValues ||
+		(!isCreate && (!empData[keysIndex.id] || !formValues[keysIndex.id]))
+	) {
 		return (
 			<div>
 				<EmployeeHeader id={id} />
@@ -72,8 +89,9 @@ const Employee = ({ id, row }: { id: string; row: number }) => {
 
 		setEditMode(false);
 		setFormValues(undefined);
+		const rangeRow = isCreate ? sheetData.length + 2 : row;
 		const updatedValues = await updateData({
-			range: `A${row}`,
+			range: `A${rangeRow}`,
 			values: [formValues ?? []],
 		});
 
@@ -83,15 +101,20 @@ const Employee = ({ id, row }: { id: string; row: number }) => {
 			return;
 		}
 
-		setEmpData(updatedValues);
-		setFormValues(updatedValues);
 		showAlert('SUCCESS');
+		router.push(
+			`/people/${rangeRow}-${updatedValues[keysIndex.id]}?${createQueryString({ refresh: true })}`
+		);
 	};
 
 	const handleInputChange = (value: string, keyIndex: number) => {
 		const newValues = [...(formValues || [])];
 		newValues[keyIndex] = value;
 		setFormValues(newValues);
+	};
+
+	const buttonText = (): string => {
+		return editMode ? (isCreate ? 'Create' : 'Update') : 'Edit';
 	};
 
 	return (
@@ -119,13 +142,14 @@ const Employee = ({ id, row }: { id: string; row: number }) => {
 							[keysIndex.aadhar, keysIndex.pan, keysIndex.uan],
 						]}
 						handleChange={handleInputChange}
+						isCreate={isCreate}
 					/>
 				</div>
 				<button
 					onClick={() => (editMode ? setShowModal(true) : setEditMode(true))}
 					className='mr-20 cursor-pointer self-end rounded-md border-2 bg-gray-500 px-8 py-1 font-mono font-semibold text-white transition duration-150 ease-in-out hover:border-gray-800 hover:bg-gray-200 hover:text-gray-800'
 				>
-					{editMode ? 'Update' : 'Edit'}
+					{buttonText()}
 				</button>
 				{showModal && (
 					<Modal

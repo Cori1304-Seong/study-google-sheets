@@ -1,3 +1,4 @@
+import { useSearchParams } from 'next/navigation';
 import {
 	createContext,
 	ReactElement,
@@ -17,12 +18,15 @@ const SheetContext = createContext<TSheetContext>({
 });
 
 const SheetContextProvider = ({ children }: any): ReactElement => {
+	const searchParams = useSearchParams();
 	const [glData, setGlData] = useState<{
 		fields: string[];
 		data: string[][];
 	}>({ fields: [], data: [] });
 
 	useEffect(() => {
+		if (glData.data.length && !searchParams.get('refresh')) return;
+
 		(async () => {
 			const response = await fetch(
 				process.env.NEXT_PUBLIC_BASE_URL + 'api/sheets'
@@ -30,7 +34,7 @@ const SheetContextProvider = ({ children }: any): ReactElement => {
 			const result = await response.json();
 			setGlData(result);
 		})();
-	}, []);
+	}, [searchParams.get('refresh')]);
 
 	return (
 		<SheetContext.Provider value={glData}>{children}</SheetContext.Provider>
