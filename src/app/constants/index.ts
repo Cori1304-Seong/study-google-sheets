@@ -1,4 +1,4 @@
-export const TOTAL_ITEMS_PER_PAGE = 5;
+export const TOTAL_ITEMS_PER_PAGE = 10;
 
 export const searchKeys = {
 	name: 'Name',

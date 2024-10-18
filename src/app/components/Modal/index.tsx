@@ -8,11 +8,21 @@ type ModalProps = {
 		new: string;
 		isChanged: boolean;
 	}[];
+	isCreate?: boolean;
 	handleClose: MouseEventHandler;
 	handleSave: MouseEventHandler;
 };
 
-const Modal = ({ values, handleClose, handleSave }: ModalProps) => {
+const Modal = ({
+	values,
+	isCreate = false,
+	handleClose,
+	handleSave,
+}: ModalProps) => {
+	const [header, description, buttonText] = isCreate
+		? ['Create Record', 'Please verify and click create.', 'Create']
+		: ['Update Details', 'Please verify and click update.', 'Update'];
+
 	return (
 		<div className='relative z-10'>
 			<div
@@ -32,12 +42,10 @@ const Modal = ({ values, handleClose, handleSave }: ModalProps) => {
 										className='text-base font-semibold leading-6 text-gray-900'
 										id='modal-title'
 									>
-										Update Details
+										{header}
 									</h3>
 									<div>
-										<p className='text-sm text-gray-500'>
-											Please verify and click update.
-										</p>
+										<p className='text-sm text-gray-500'>{description}</p>
 									</div>
 								</div>
 							</div>
@@ -51,7 +59,7 @@ const Modal = ({ values, handleClose, handleSave }: ModalProps) => {
 								className='inline-flex w-full justify-center rounded-md bg-orange-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-600 sm:ml-3 sm:w-auto'
 								onClick={handleSave}
 							>
-								Update
+								{buttonText}
 							</button>
 							<button
 								type='button'

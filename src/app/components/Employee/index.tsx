@@ -163,6 +163,7 @@ const Employee = ({
 						values={getDiffValues(empData, formValues)}
 						handleClose={() => setShowModal(false)}
 						handleSave={handleUpdate}
+						isCreate={isCreate}
 					/>
 				)}
 			</div>
