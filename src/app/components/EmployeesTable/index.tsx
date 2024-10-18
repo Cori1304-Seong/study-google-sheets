@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { ReactElement } from 'react';
 import PaginationFooter from './PaginationFooter';
 import { usePaginationContext } from '@/app/context/PaginationContext';
+import EmployeeTableSkeleton from './EmployeeTableSkeleton';
 
 const EmployeesTable = (): ReactElement => {
 	const router = useRouter();
@@ -15,6 +16,10 @@ const EmployeesTable = (): ReactElement => {
 		const key = `${id}-${name}`;
 		router.push(`/people/${idNameRowMap[key]}-${id}`);
 	};
+
+	if (!fields.length) {
+		return <EmployeeTableSkeleton />;
+	}
 
 	return (
 		<table className='w-full table-auto border-2 text-left text-sm text-gray-500 shadow-md rtl:text-right'>
