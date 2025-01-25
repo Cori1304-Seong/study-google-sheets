@@ -6,8 +6,9 @@ export async function getData() {
 
 	const data = await glSheets?.spreadsheets?.values?.get({
 		spreadsheetId: process.env.SHEET_ID,
-		range: 'A1:J',
+		range: 'A1:C6',
 	});
 
+	console.log(data.data.values);
 	return { data: data?.data?.values };
 }
