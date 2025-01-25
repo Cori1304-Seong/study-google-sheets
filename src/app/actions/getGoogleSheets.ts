@@ -12,9 +12,7 @@ type TCredential = {
 };
 
 export async function getGoogleSheets() {
-	const credential: TCredential = JSON.parse(
-		atob(process.env.GOOGLE_SERVICE_KEY ?? '')
-	);
+	const credential: TCredential = JSON.parse(process.env.API_KEY ?? '');
 
 	const glAuth = await google.auth.getClient({
 		projectId: credential.project_id,
